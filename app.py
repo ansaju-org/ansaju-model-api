@@ -13,8 +13,7 @@ def require_auth(f):
     from functools import wraps
     @wraps(f)
     def wrapper(*args, **kwargs):
-        auth_header = request.headers.get("Authorization", "")
-        token = auth_header.replace("Bearer ", "")
+        token = request.headers.get("x-api-token", "")
         if token != SECRET_TOKEN:
             return jsonify({"error": "Unauthorized"}), 401
         return f(*args, **kwargs)
